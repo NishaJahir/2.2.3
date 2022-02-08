@@ -119,7 +119,7 @@ class NovalnetPaymentMethodReinitializePayment
     
        
        // If the Novalnet payments are rejected do the reinitialize payment
-       if( !in_array($tid_status, [75, 85, 86, 90, 91, 98, 99, 100, 103]) ) {
+       if( !empty($tid_status) && !in_array($tid_status, [75, 85, 86, 90, 91, 98, 99, 100, 103]) ) {
           return $twig->render('Novalnet::NovalnetPaymentMethodReinitializePayment', [
             'order' => $order, 
             'paymentMethodId' => $mopId,
