@@ -144,7 +144,7 @@ class RefundEventProcedure
                         $this->paymentHelper->createRefundPayment($paymentDetails, $paymentData, $transactionComments);
                     } else { // Update the already exist payment entry
                         $paymentData['tid'] = !empty($responseData['tid']) ? $responseData['tid'] : $refundTid;
-                        $this->paymentHelper->updatePayments($parentOrder[0]->tid, $responseData['tid_status'], $parent_order_id, true);
+                        $this->paymentHelper->updatePayments($refundTid, $responseData['tid_status'], $parent_order_id, true);
                     }
                 } else {
                     $error = $this->paymentHelper->getNovalnetStatusText($responseData);
