@@ -572,7 +572,7 @@ class PaymentService
      * @return string
      */
     private function getReturnPageUrl()
-    {
+    {   
         return $this->webstoreHelper->getCurrentWebstoreConfiguration()->domainSsl . '/payment/novalnet/paymentResponse/';
     }
 
@@ -593,6 +593,12 @@ class PaymentService
     */
     public function getRedirectPaymentUrl()
     {
+        $lang = $this->sessionStorage->getLocaleSettings()->language;
+        $domain = $this->webstoreHelper->getCurrentWebstoreConfiguration()->domainSsl;
+        
+        $this->getLogger(__METHOD__)->error('ln', $lang);
+        $this->getLogger(__METHOD__)->error('domain', $domain);
+        
         return $this->webstoreHelper->getCurrentWebstoreConfiguration()->domainSsl . '/payment/novalnet/redirectPayment/';
     }
     
