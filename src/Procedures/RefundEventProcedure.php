@@ -75,7 +75,9 @@ class RefundEventProcedure
      
        $order = $eventTriggered->getOrder(); 
        $parent_order_id = $order->id;
-
+       
+     $this->getLogger(__METHOD__)->error('order obj', $order);
+     
         // Checking order type
        if ($order->typeId == OrderType::TYPE_CREDIT_NOTE) {
         foreach ($order->orderReferences as $orderReference) {
@@ -162,8 +164,10 @@ class RefundEventProcedure
                     $paymentData['payment_name'] = strtolower($paymentKey);
                     
                     if ($order->typeId == OrderType::TYPE_CREDIT_NOTE) {
+                        $this->getLogger(__METHOD__)->error('credit note order', $paymentData);
                         $this->paymentHelper->createRefundPayment($paymentDetails, $paymentData, $transactionComments);
                     } else {
+                        $this->getLogger(__METHOD__)->error('status change order', $paymentData);
                         $paymentData['tid']         = !empty($responseData['tid']) ? $responseData['tid'] : $parentOrder[0]->tid;
                         $this->paymentHelper->updatePayments($parentOrder[0]->tid, $responseData['tid_status'], $parent_order_id, true);
                         
