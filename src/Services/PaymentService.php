@@ -573,7 +573,7 @@ class PaymentService
      */
     private function getReturnPageUrl()
     {   
-        return $this->webstoreHelper->getCurrentWebstoreConfiguration()->domainSsl . '/payment/novalnet/paymentResponse/';
+        return $this->webstoreHelper->getCurrentWebstoreConfiguration()->domainSsl . '/' . $this->sessionStorage->getLocaleSettings()->language . '/payment/novalnet/paymentResponse/';
     }
 
     /**
@@ -583,7 +583,7 @@ class PaymentService
     */
     public function getProcessPaymentUrl()
     {
-        return $this->webstoreHelper->getCurrentWebstoreConfiguration()->domainSsl . '/payment/novalnet/processPayment/';
+        return $this->webstoreHelper->getCurrentWebstoreConfiguration()->domainSsl . '/' . $this->sessionStorage->getLocaleSettings()->language . '/payment/novalnet/processPayment/';
     }
 
     /**
@@ -592,14 +592,8 @@ class PaymentService
     * @return string
     */
     public function getRedirectPaymentUrl()
-    {
-        $lang = $this->sessionStorage->getLocaleSettings()->language;
-        $domain = $this->webstoreHelper->getCurrentWebstoreConfiguration()->domainSsl;
-        
-        $this->getLogger(__METHOD__)->error('ln', $lang);
-        $this->getLogger(__METHOD__)->error('domain', $domain);
-        
-        return $this->webstoreHelper->getCurrentWebstoreConfiguration()->domainSsl . '/payment/novalnet/redirectPayment/';
+    { 
+        return $this->webstoreHelper->getCurrentWebstoreConfiguration()->domainSsl . '/' . $this->sessionStorage->getLocaleSettings()->language . '/payment/novalnet/redirectPayment/';
     }
     
     /**
