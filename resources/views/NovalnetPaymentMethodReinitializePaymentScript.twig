@@ -1,0 +1,45 @@
+<input type="hidden" name="nn_mop_id" id="nn_mop_id" value="{{paymentMethodIds}}">
+
+<script type="text/javascript">
+
+  jQuery(function () {
+    jQuery("[id^='nnReinitPaymentMethod-']").show();
+    
+    jQuery("[id^='nnReinitPaymentMethod-']").click(function () {
+      jQuery("[id^='nnReinitPaymentMethod-']").hide();
+    });
+    
+    jQuery("#direct-payment-process").click(function () {
+      jQuery.get("/payment/novalnet/changePaymentMethod/", function(data)
+      {
+        window.location = data;
+      });
+    });
+    
+    jQuery('#redirect-payment-process').click(function() {
+        window.location.href = jQuery('#nn_redirect_url').val();
+      });
+  
+      jQuery('#form-payment-process').click(function() {
+          jQuery('#novalnetPaymentForm').show();
+      });
+    
+  });
+ 
+  var paymentMethodIds = jQuery('#nn_mop_id').val();
+  document.addEventListener('historyPaymentMethodChanged', e => {
+    for(let property in e.detail.newOrder.order.properties){
+      if(e.detail.newOrder.order.properties[property].typeId === 3){
+       for(let paymentMethodId in paymentMethodIds) {
+       if (e.detail.newOrder.order.properties[property].value ==  paymentMethodIds[paymentMethodId]) {
+          document.getElementById("nnReinitPaymentMethod-" + e.detail.oldOrder.id).style.display = "block";
+        } else {
+          document.getElementById("nnReinitPaymentMethod-" + e.detail.oldOrder.id).style.display = "none";
+        }
+       }
+      }
+    }
+  });
+</script>
+
+
