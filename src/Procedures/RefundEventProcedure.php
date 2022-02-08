@@ -100,23 +100,20 @@ class RefundEventProcedure
        $parentOrder = $this->transaction->getTransactionData('orderNo', $parent_order_id);
       $this->getLogger(__METHOD__)->error('order details', $parentOrder);
      
-       foreach($parentOrder as $order) {
-        $this->getLogger(__METHOD__)->error('order details loop', $order);
-         $additionalInfo = json_decode($order->additionalInfo, true);
+       foreach($parentOrder as $orderde) {
+        $this->getLogger(__METHOD__)->error('order details loop', $orderde);
+         $additionalInfo = json_decode($orderde->additionalInfo, true);
         $this->getLogger(__METHOD__)->error('additional', $additionalInfo);
           if(isset($additionalInfo['tid_status']) && $additionalInfo['tid_status'] == 100) {
               $status = $additionalInfo['tid_status'];
-              $parentOrder[0]->tid = $order->tid;
-              $parentOrder[0]->amount = $order->amount;
+              $parentOrder[0]->tid = $orderde->tid;
+              $parentOrder[0]->amount = $orderde->amount;
               break;
           }
           
        }
      
-     $this->getLogger(__METHOD__)->error('status nsss', $status);
-     $this->getLogger(__METHOD__)->error('tid sss', $parentOrder[0]->tid);
-     $this->getLogger(__METHOD__)->error('amount nnn', $parentOrder[0]->amount);
-     
+    
         $parent_order_amount = $parentOrder[0]->amount;
        //foreach ($paymentDetails[0]->properties as $paymentStatus)
         //{
