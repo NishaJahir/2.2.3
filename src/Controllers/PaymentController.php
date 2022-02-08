@@ -144,7 +144,7 @@ class PaymentController extends Controller
         $this->sessionStorage->getPlugin()->setValue('nnPaymentData', $paymentRequestData);
         $this->paymentService->validateResponse();
        
-        return $this->response->redirectTo($paymentRequestData['lang'] . '/confirmation');
+        return $this->response->redirectTo(strtolower($paymentRequestData['lang']) . '/confirmation');
     }
 
     /**
@@ -196,7 +196,7 @@ class PaymentController extends Controller
                 $this->sessionStorage->getPlugin()->setValue('nnPaymentUrl',$serverRequestData['url']);
                 $this->paymentService->pushNotification($notificationMessage, 'success', 100);
                 if(!empty($requestData['nn_reinit'])) {
-                    return $this->response->redirectTo($serverRequestData['data']['lang'] . '/payment/novalnet/redirectPayment');
+                    return $this->response->redirectTo(strtolower($serverRequestData['data']['lang']) . '/payment/novalnet/redirectPayment');
                 } else {
                     return $this->response->redirectTo('place-order');
                 }
@@ -252,7 +252,7 @@ class PaymentController extends Controller
         if(!empty($requestData['nn_reinit'])) {
             $this->paymentService->paymentCalltoNovalnetServer();
             $this->paymentService->validateResponse();
-            return $this->response->redirectTo($serverRequestData['data']['lang'] . '/confirmation');
+            return $this->response->redirectTo(strtolower($serverRequestData['data']['lang']) . '/confirmation');
             
         } else {
             return $this->response->redirectTo('place-order');
@@ -278,7 +278,7 @@ class PaymentController extends Controller
                                                                 'nnPaymentUrl' => $paymentUrl
                                    ]);
         } else {            
-            return $this->response->redirectTo($paymentRequestData['lang'] . '/confirmation');
+            return $this->response->redirectTo(strtolower($paymentRequestData['lang']) . '/confirmation');
           }
     }
     
