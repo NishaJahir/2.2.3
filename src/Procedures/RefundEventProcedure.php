@@ -106,13 +106,14 @@ class RefundEventProcedure
               $status = $additionalInfo['tid_status'];
               $parentOrder[0]->tid = $order->tid;
               $parentOrder[0]->amount = $order->amount;
+              break;
           }
-          break;
+          
        }
      
-     $this->getLogger(__METHOD__)->error('status', $status);
-     $this->getLogger(__METHOD__)->error('tid', $parentOrder[0]->tid);
-     $this->getLogger(__METHOD__)->error('amount', $parentOrder[0]->amount);
+     $this->getLogger(__METHOD__)->error('status nsss', $status);
+     $this->getLogger(__METHOD__)->error('tid sss', $parentOrder[0]->tid);
+     $this->getLogger(__METHOD__)->error('amount nnn', $parentOrder[0]->amount);
      
         $parent_order_amount = $parentOrder[0]->amount;
        //foreach ($paymentDetails[0]->properties as $paymentStatus)
