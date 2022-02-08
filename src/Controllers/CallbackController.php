@@ -292,7 +292,7 @@ class CallbackController extends Controller
             }
             if($this->getPaymentTypeLevel() == 2 && $this->aryCaptureParams['tid_status'] == '100')
             {
-                $nnTransactionHistory->additionalInfo = ['type' => 'credit'];
+                $nnTransactionHistory->additionalInfo = ['type' => 'credit', 'tid_status' => $this->aryCaptureParams['tid_status']];
                 
                 // Credit entry for the payment types Invoice, Prepayment and Cashpayment.
                 if(in_array($this->aryCaptureParams['payment_type'], ['INVOICE_CREDIT', 'CASHPAYMENT_CREDIT', 'ONLINE_TRANSFER_CREDIT']))
@@ -331,7 +331,7 @@ class CallbackController extends Controller
             else if($this->getPaymentTypeLevel() == 1 && $this->aryCaptureParams['tid_status'] == 100)
             {
                 
-                $nnTransactionHistory->additionalInfo = ['type'=>'debit'];
+                $nnTransactionHistory->additionalInfo = ['type'=>'debit', 'tid_status' => $this->aryCaptureParams['tid_status']];
                 if ($this->aryCaptureParams['payment_type'] == 'RETURN_DEBIT_SEPA') {
                     $callbackComments = sprintf($this->paymentHelper->getTranslatedText('callback_return_debit_execution',$orderLanguage), $nnTransactionHistory->tid, sprintf('%0.2f', ($this->aryCaptureParams['amount']/100)) , $this->aryCaptureParams['currency'], date('d.m.Y'), date('H:i:s'), $this->aryCaptureParams['tid'] );
         } elseif ($this->aryCaptureParams['payment_type'] == 'REVERSAL') {
