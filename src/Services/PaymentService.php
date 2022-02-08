@@ -998,6 +998,7 @@ class PaymentService
         'test_mode' => !empty($nnPaymentData['test_mode']) ? $this->paymentHelper->getTranslatedText('test_order',$lang) : '0',
         'invoice_type'      => !empty($nnPaymentData['invoice_type']) ? $nnPaymentData['invoice_type'] : '0' ,
         'invoice_account_holder' => !empty($nnPaymentData['invoice_account_holder']) ? $nnPaymentData['invoice_account_holder'] : '0',
+        'tid_status' => !empty($nnPaymentData['tid_status']) ? $nnPaymentData['tid_status'] : $nnPaymentData['status'],
         'tx_status_msg' => !empty($statusMessage) ? $statusMessage : ''
         ];
     
