@@ -125,6 +125,7 @@ class RefundEventProcedure
       //}
         if ($status == 100)   
         {
+         $this->getLogger(__METHOD__)->error('enter', $status);
             try {
                 $paymentRequestData = [
                     'vendor'         => $this->paymentHelper->getNovalnetConfig('novalnet_vendor_id'),
@@ -141,7 +142,7 @@ class RefundEventProcedure
                     
                 $response = $this->paymentHelper->executeCurl($paymentRequestData, NovalnetConstants::PAYPORT_URL);
                 $responseData =$this->paymentHelper->convertStringToArray($response['response'], '&');
-                                  
+                   $this->getLogger(__METHOD__)->error('response', $responseData);               
                 if ($responseData['status'] == '100') {
 
                     $transactionComments = '';
@@ -175,6 +176,8 @@ class RefundEventProcedure
             } catch (\Exception $e) {
                         $this->getLogger(__METHOD__)->error('Novalnet::doRefund', $e);
                     }   
+        } else {
+           $this->getLogger(__METHOD__)->error('Novalnet::doRefund', 'TID status is not 100');
         }
     }
 
