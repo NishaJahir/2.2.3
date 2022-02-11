@@ -36,18 +36,6 @@
       "name"        : "Novalnet payment details",
       "description" : "Display the Novalnet payment details on the order confirmation page",
       "defaultLayoutContainer": "Ceres::OrderConfirmation.AdditionalPaymentInformation"
-    },
-    {
-      "key"         : "Novalnet\\Providers\\DataProvider\\NovalnetPaymentMethodReinitializePayment",
-      "name"        : "Novalnet Initiate Payment",
-      "description" : "Display the pay now Button",
-      "defaultLayoutContainer": "Ceres::OrderConfirmation.AdditionalPaymentInformation"
-    },
-    {
-      "key"         : "Novalnet\\Providers\\DataProvider\\NovalnetPaymentMethodReinitializePaymentScript",
-      "name"        : "Novalnet Initiate Payment Script",
-      "description" : "A script for displaying the pay now Button",
-      "defaultLayoutContainer": "Ceres::Script.AfterScriptsLoaded"
     }
   ]
 }
