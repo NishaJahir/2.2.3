@@ -704,7 +704,8 @@ class PaymentService
         $this->getLogger(__METHOD__)->error('bid', $billingInvoiceAddrId);
         $this->getLogger(__METHOD__)->error('sid', $shippingInvoiceAddrId);
         $this->getLogger(__METHOD__)->error('key', $paymentKey);
-        
+        try {
+            if (! is_null($basket) && $basket instanceof Basket && !empty($basket->customerInvoiceAddressId)) { 
         // Get payment name in lowercase
         $paymentKeyLow = strtolower((string) $paymentKey);
         $guaranteePayment = $this->config->get('Novalnet.'.$paymentKeyLow.'_payment_guarantee_active');
@@ -772,6 +773,11 @@ class PaymentService
             return $processingType;
         }//end if
         return 'normal';
+            }
+        } catch(\Exception $e) {
+            return false;
+        }
+        
     }
     
     /**
