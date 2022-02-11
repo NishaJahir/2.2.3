@@ -700,6 +700,11 @@ class PaymentService
     */
     public function getGuaranteeStatus(Basket $basket, $paymentKey, $orderAmount = 0, $billingInvoiceAddrId = 0, $shippingInvoiceAddrId = 0)
     {
+        $this->getLogger(__METHOD__)->error('basket', $basket);
+        $this->getLogger(__METHOD__)->error('bid', $billingInvoiceAddrId);
+        $this->getLogger(__METHOD__)->error('sid', $shippingInvoiceAddrId);
+        $this->getLogger(__METHOD__)->error('key', $paymentKey);
+        
         // Get payment name in lowercase
         $paymentKeyLow = strtolower((string) $paymentKey);
         $guaranteePayment = $this->config->get('Novalnet.'.$paymentKeyLow.'_payment_guarantee_active');
