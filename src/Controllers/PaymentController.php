@@ -255,7 +255,7 @@ class PaymentController extends Controller
             return $this->response->redirectTo(strtolower($serverRequestData['data']['lang']) . '/confirmation');
             
         } else {
-            return $this->response->redirectTo('place-order');
+            return $this->response->redirectTo(strtolower($serverRequestData['data']['lang']) . '/place-order');
         }
     }
 
