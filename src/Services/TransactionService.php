@@ -93,7 +93,7 @@ class TransactionService
         
         $this->getLogger(__METHOD__)->error('additionalInfo2', $additionalInfo);
         
-        $order->$additionalInfo = json_encode($additionalInfo);
+        $order->additionalInfo = json_encode($additionalInfo);
         
         $this->getLogger(__METHOD__)->error('detail order2', $order);
         
