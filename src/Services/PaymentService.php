@@ -823,6 +823,9 @@ class PaymentService
             $paymentData['mop']         = $paymentDetails[0]->mopId;
             $paymentData['tid_status']  = $responseData['tid_status'];
             
+            $orderDetails = $this->transactionLogData->getTransactionData('orderNo', $order->id);
+            $this->getLogger(__METHOD__)->error('db data', $orderDetails);
+            
             $transactionComments = '';
             if($responseData['tid_status'] == '100') {
                    if (in_array($key, ['27', '41'])) {
