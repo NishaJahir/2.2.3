@@ -700,10 +700,7 @@ class PaymentService
     */
     public function getGuaranteeStatus(Basket $basket, $paymentKey, $orderAmount = 0, $billingInvoiceAddrId = 0, $shippingInvoiceAddrId = 0)
     {
-        $this->getLogger(__METHOD__)->error('basket', $basket);
-        $this->getLogger(__METHOD__)->error('bid', $billingInvoiceAddrId);
-        $this->getLogger(__METHOD__)->error('sid', $shippingInvoiceAddrId);
-        $this->getLogger(__METHOD__)->error('key', $paymentKey);
+
         try {
             if (! is_null($basket) && $basket instanceof Basket && !empty($basket->customerInvoiceAddressId)) { 
         // Get payment name in lowercase
