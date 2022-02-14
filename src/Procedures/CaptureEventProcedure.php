@@ -65,7 +65,7 @@ class CaptureEventProcedure
         $order = $eventTriggered->getOrder(); 
         $payments = pluginApp(\Plenty\Modules\Payment\Contracts\PaymentRepositoryContract::class);  
         $paymentDetails = $payments->getPaymentsByOrderId($order->id);
-        
+        $this->getLogger(__METHOD__)->error('payment', $paymentDetails);
        
         foreach ($paymentDetails as $paymentDetail)
         {
