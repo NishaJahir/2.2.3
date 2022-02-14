@@ -102,10 +102,11 @@ class RefundEventProcedure
 
        $key = $this->paymentService->getkeyByPaymentKey(strtoupper($paymentKey));
         
-        $this->getLogger(__METHOD__)->error('order', $order);
+        $this->getLogger(__METHOD__)->error('orderSN', $order);
+      $orderArr = (array) $order;
        
        // Get the proper order amount even the system currency and payment currency are differ
-        if(count((array)$order->amounts) > 1) {
+        if(count($order->amounts) > 1) {
            foreach($order->amounts as $amount) {
                 $this->getLogger(__METHOD__)->error('amount', $amount);
                //if($amount['isSystemCurrency'] == false) {
