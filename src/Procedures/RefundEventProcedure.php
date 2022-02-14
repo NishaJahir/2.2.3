@@ -101,16 +101,20 @@ class RefundEventProcedure
        }
 
        $key = $this->paymentService->getkeyByPaymentKey(strtoupper($paymentKey));
+        
+        $this->getLogger(__METHOD__)->error('order', $order);
        
        // Get the proper order amount even the system currency and payment currency are differ
-        if(count($order['amounts']) > 1) {
-           foreach($order['amounts'] as $amount) {
-               if($amount['isSystemCurrency'] == false) {
-                   $refundAmount = (float) $amount['invoiceTotal']; // Get the refunding amount
-               }
+        if(count((array)$order->amounts) > 1) {
+           foreach($order->amounts as $amount) {
+                $this->getLogger(__METHOD__)->error('amount', $amount);
+               //if($amount['isSystemCurrency'] == false) {
+                   //$refundAmount = (float) $amount['invoiceTotal']; // Get the refunding amount
+               //}
+               $refundAmount = 0.01;
            }
          } else {
-             $refundAmount = (float) $order['amounts'][0]['invoiceTotal'];
+             $refundAmount = (float) $order->amounts[0]->invoiceTotal;
          }
         
 
