@@ -88,10 +88,14 @@ class RefundEventProcedure
        $paymentDetails = $payments->getPaymentsByOrderId($parent_order_id); // Check if it is require
 
        $orderDetails = $this->transaction->getTransactionData('orderNo', $parent_order_id); // Load all the details for an order
+        
+       $this->getLogger(__METHOD__)->error('data', $orderDetails);
 
        foreach($orderDetails as $orderDetail) {
+           $this->getLogger(__METHOD__)->error('data1', $orderDetail);
             $additionalInfo = json_decode($orderDetail->additionalInfo, true);
             if (isset($additionalInfo['tid_status']) && $additionalInfo['tid_status'] == 100) {
+                $this->getLogger(__METHOD__)->error('tid', $orderDetail->tid);
                   $tidStatus = $additionalInfo['tid_status'];
                   $refundTid = $orderDetail->tid;
                   $orderAmount = $orderDetail->amount;
