@@ -815,7 +815,16 @@ class PaymentService
          $response = $this->paymentHelper->executeCurl($paymentRequestData, NovalnetConstants::PAYPORT_URL);
          $responseData =$this->paymentHelper->convertStringToArray($response['response'], '&');
             
-            $invoiceAmount = 0.01;
+         // Get the proper order amount even the system currency and payment currency are differ
+        if(count($order->amounts) > 1) {
+           foreach($order->amounts as $amount) {
+               if($amount->isSystemCurrency == false) {
+                   $invoiceAmount = (float) $amount->invoiceTotal;
+               }
+           }
+         } else {
+             $invoiceAmount = (float) $order->amounts[0]->invoiceTotal;
+         }
          
             
          if ($responseData['status'] == '100') {
