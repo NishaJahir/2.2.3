@@ -89,7 +89,7 @@ class TransactionService
         $additionalInfo = json_decode($order->additionalInfo, true);
         $additionalInfo['tid_status'] = $tidStatus;
         
-        $this->getLogger(__METHOD__)->error('additionalInfo', $additionalInfo);
+        $this->getLogger(__METHOD__)->error('orderDetails', $orderDetails);
         
         $this->getLogger(__METHOD__)->error('additionalInfo2', $additionalInfo);
         
