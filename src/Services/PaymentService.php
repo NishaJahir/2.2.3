@@ -839,7 +839,7 @@ class PaymentService
             $paymentData['mop']         = $paymentMopId;
             $paymentData['tid_status']  = $responseData['tid_status'];
             
-            $orderDetails = $this->transactionLogData->updateTransactionData('orderNo', $order->id, $responseData['tid_status']);
+            $orderDetails = $this->transactionLogData->updateTransactionData('tid', $tid, $responseData['tid_status']);
             $this->getLogger(__METHOD__)->error('db data33', $orderDetails);
             
             $transactionComments = '';
