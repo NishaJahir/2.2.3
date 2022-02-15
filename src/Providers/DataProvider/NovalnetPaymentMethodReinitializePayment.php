@@ -61,16 +61,22 @@ class NovalnetPaymentMethodReinitializePayment
         }
     }
     
+    $paymentHelper->logger('P order', $order);
     // Get the proper order amount even the system currency and payment currency are differ
     if(count($order['amounts']) > 1) {
        foreach($order['amounts'] as $amount) {
            if($amount['isSystemCurrency'] == false) {
                $invoiceAmount = $amount['invoiceTotal'];
+               $paymentHelper->logger('P OC', $invoiceAmount);
            }
        }
      } else {
+        
          $invoiceAmount = $order['amounts'][0]['invoiceTotal'];
+         $paymentHelper->logger('P SC', $invoiceAmount);
      }
+    
+    $paymentHelper->logger('P FC', $invoiceAmount);
       
       // Changed payment method key
        $paymentKey = $paymentHelper->getPaymentKeyByMop($mopId);
