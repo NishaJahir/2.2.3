@@ -68,7 +68,7 @@ class NovalnetPaymentMethodReinitializePayment
        foreach($order['amounts'] as $amount) {
            $paymentHelper->logger('SN1', $basketRepository->load()->currency);
            $paymentHelper->logger('SN2', $amount['currency']);
-           if($amount['isSystemCurrency'] == false && $basketRepository->load()->currency == $amount['currency']) {
+           if($basketRepository->load()->currency == $amount['currency']) {
                $invoiceAmount = $amount['invoiceTotal'];;
            }
        }
