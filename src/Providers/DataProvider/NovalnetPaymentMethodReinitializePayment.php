@@ -62,6 +62,7 @@ class NovalnetPaymentMethodReinitializePayment
     }
     
     $paymentHelper->logger('P order', $order);
+    $paymentHelper->logger('SN currency', $basketRepository->load()->currency);
     // Get the proper order amount even the system currency and payment currency are differ
     if(count($order['amounts']) > 1) {
        foreach($order['amounts'] as $amount) {
