@@ -812,22 +812,22 @@ class PaymentService
          $response = $this->paymentHelper->executeCurl($paymentRequestData, NovalnetConstants::PAYPORT_URL);
          $responseData =$this->paymentHelper->convertStringToArray($response['response'], '&');
             
-         // Get the proper order amount even the system currency and payment currency are differ
-        if(count($order->amounts) > 1) {
-           foreach($order->amounts as $amount) {
-               if($amount->isSystemCurrency == false) {
-                   $invoiceAmount = (float) $amount->invoiceTotal;
-               }
-           }
-         } else {
-             $invoiceAmount = (float) $order->amounts[0]->invoiceTotal;
-         }
-          
          // Get the updated payment details
          foreach ($paymentDetails as $paymentDetail)
          {
             $paymentCurrency = $paymentDetail->currency;
             $paymentMopId = $paymentDetail->mopId;
+         }
+            
+         // Get the proper order amount even the system currency and payment currency are differ
+        if(count($order->amounts) > 1) {
+           foreach($order->amounts as $amount) {
+               if($paymentCurrency == $amount->currency) {
+                   $invoiceAmount = (float) $amount->invoiceTotal;
+               }
+           }
+         } else {
+             $invoiceAmount = (float) $order->amounts[0]->invoiceTotal;
          }
 
          if ($responseData['status'] == '100') {
