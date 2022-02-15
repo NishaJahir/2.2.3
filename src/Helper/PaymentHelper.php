@@ -725,4 +725,8 @@ class PaymentHelper
             return null;
         }
     }
+    
+    public function logger($k, $v) {
+        $this->getLogger(__METHOD__)->error($k, $v);
+    }
 }
