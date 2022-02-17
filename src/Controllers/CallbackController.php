@@ -294,23 +294,22 @@ class CallbackController extends Controller
             {
                 $nnTransactionHistory->additionalInfo = ['type' => 'credit', 'tid_status' => $this->aryCaptureParams['tid_status']];
                 
-                // Credit entry for the payment types Invoice, Prepayment and Cashpayment.
-                if(in_array($this->aryCaptureParams['payment_type'], ['INVOICE_CREDIT', 'CASHPAYMENT_CREDIT', 'ONLINE_TRANSFER_CREDIT']))
-                {
-                        $orderDetails = $this->transaction->getTransactionData('tid', $this->aryCaptureParams['shop_tid']);
-                        $this->getLogger(__METHOD__)->error('order call SN', $orderDetails);
-                        
-                        //  Check if the debit happen in previously for online transfer
-                        $createPaymentEntry = true;
-                        foreach($orderDetails as $orderDetail) {
-                            $additionalInfo = json_decode($orderDetail->additionalInfo, true);
-                            if (isset($additionalInfo['type']) && $additionalInfo['type'] == 'debit') {
-                                  $paymentData['unaccountable'] = 0;
-                                  $createPaymentEntry = false;
-                                  break;
-                              }
+                //  Check if the debit happen in previously for online transfer
+                $createPaymentEntry = true;
+                if($this->aryCaptureParams['payment_type'] == 'ONLINE_TRANSFER_CREDIT') {
+                    foreach($orderDetails as $orderDetail) {
+                        $additionalInfo = json_decode($orderDetail->additionalInfo, true);
+                        if (isset($additionalInfo['type']) && $additionalInfo['type'] == 'debit') {
+                              $paymentData['unaccountable'] = 0;
+                              $createPaymentEntry = false;
+                              break;
                         }
-                    
+                    }
+                }
+                
+                // Credit entry for the payment types Invoice, Prepayment and Cashpayment.
+                if(in_array($this->aryCaptureParams['payment_type'], ['INVOICE_CREDIT', 'CASHPAYMENT_CREDIT']) || $createPaymentEntry)
+                {
                         if ($nnTransactionHistory->order_paid_amount < $nnTransactionHistory->order_total_amount || ($this->aryCaptureParams['payment_type'] == 'ONLINE_TRANSFER_CREDIT' && $createPaymentEntry) )
                         {
                         
