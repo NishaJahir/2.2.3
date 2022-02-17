@@ -299,8 +299,18 @@ class CallbackController extends Controller
                 {
                         $orderDetails = $this->transaction->getTransactionData('tid', $this->aryCaptureParams['shop_tid']);
                         $this->getLogger(__METHOD__)->error('order call', $orderDetails);
-                        $paymentDetails = $this->paymentRepository->getPaymentsByOrderId( $nnTransactionHistory->orderNo);
-                        $this->getLogger(__METHOD__)->error('payment call', $paymentDetails);
+                        
+                        //  Check if the debit happen in previously for online transfer
+                        $createPaymentEntry = true;
+                        foreach($orderDetails as $orderDetail) {
+                            $additionalInfo = json_decode($orderDetail->additionalInfo, true);
+                            if (isset($additionalInfo['type']) && $additionalInfo['type'] == 'debit') {
+                                  $paymentData['unaccountable'] = 0;
+                                  $createPaymentEntry = false;
+                                  break;
+                              }
+                        }
+                    
                         if ($nnTransactionHistory->order_paid_amount < $nnTransactionHistory->order_total_amount || $this->aryCaptureParams['payment_type'] == 'ONLINE_TRANSFER_CREDIT')
                         {
                         
