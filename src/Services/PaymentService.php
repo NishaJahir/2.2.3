@@ -743,21 +743,39 @@ class PaymentService
              {
                  $addressValidation = true;
              }
+            
+            // Check if it is B2B customer from the European country
+            $b2bEuropeanCustomer = false;
+            if(!empty($billingAddress->companyName)) {
+                $europeanUnionCountryCodes =  [
+                                                'AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR',
+                                                'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PL',
+                                                'PT', 'RO', 'SE', 'SI', 'SK', 'UK', 'CH'
+                                              ];
+                
+                if(in_array($customerBillingIsoCode, $europeanUnionCountryCodes)) {
+                    $b2bEuropeanCustomer = true;
+                } else {
+                    $b2bEuropeanCustomer = false;     
+                }
+            }
+
+                
             // Check guarantee payment
-            if ((((int) $amount >= (int) $minimumAmount && in_array(
+            if ((((int) $amount >= (int) $minimumAmount && (in_array(
                 $customerBillingIsoCode,
                 [
                  'DE',
                  'AT',
                  'CH',
                 ]
-            ) && $basket->currency == 'EUR' && ($addressValidation || ($billingAddress === $shippingAddress)))
+            ) || $b2bEuropeanCustomer) && $basket->currency == 'EUR' && ($addressValidation || ($billingAddress === $shippingAddress)))
             )) {
                 $processingType = 'guarantee';
             } elseif ($this->config->get('Novalnet.'.$paymentKeyLow.'_payment_guarantee_force_active') == 'true') {   
                 $processingType = 'normal';
             } else {
-                if ( ! in_array( $customerBillingIsoCode, array( 'AT', 'DE', 'CH' ), true ) ) {
+                if ( (! in_array( $customerBillingIsoCode, array( 'AT', 'DE', 'CH' ), true ) || $b2bEuropeanCustomer) ) {
                     $processingType = $this->paymentHelper->getTranslatedText('guarantee_country_error');                   
                 } elseif ( $basket->currency !== 'EUR' ) {
                     $processingType = $this->paymentHelper->getTranslatedText('guarantee_currency_error');                  
