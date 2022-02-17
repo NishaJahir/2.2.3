@@ -297,6 +297,10 @@ class CallbackController extends Controller
                 // Credit entry for the payment types Invoice, Prepayment and Cashpayment.
                 if(in_array($this->aryCaptureParams['payment_type'], ['INVOICE_CREDIT', 'CASHPAYMENT_CREDIT', 'ONLINE_TRANSFER_CREDIT']))
                 {
+                        $orderDetails = $this->transaction->getTransactionData('tid', $this->aryCaptureParams['shop_tid']);
+                        $this->getLogger(__METHOD__)->error('order call', $orderDetails);
+                        $paymentDetails = $this->paymentRepository->getPaymentsByOrderId( $orderId);
+                        $this->getLogger(__METHOD__)->error('payment call', $paymentDetails);
                         if ($nnTransactionHistory->order_paid_amount < $nnTransactionHistory->order_total_amount || $this->aryCaptureParams['payment_type'] == 'ONLINE_TRANSFER_CREDIT')
                         {
                         
