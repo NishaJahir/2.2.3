@@ -297,6 +297,7 @@ class CallbackController extends Controller
                 //  Check if the debit happen in previously for online transfer
                 $createPaymentEntry = true;
                 if($this->aryCaptureParams['payment_type'] == 'ONLINE_TRANSFER_CREDIT') {
+                    $orderDetails = $this->transaction->getTransactionData('tid', $this->aryCaptureParams['shop_tid']);
                     foreach($orderDetails as $orderDetail) {
                         $additionalInfo = json_decode($orderDetail->additionalInfo, true);
                         if (isset($additionalInfo['type']) && $additionalInfo['type'] == 'debit') {
