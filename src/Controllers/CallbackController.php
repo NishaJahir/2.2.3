@@ -299,7 +299,7 @@ class CallbackController extends Controller
                 {
                         $orderDetails = $this->transaction->getTransactionData('tid', $this->aryCaptureParams['shop_tid']);
                         $this->getLogger(__METHOD__)->error('order call', $orderDetails);
-                        $paymentDetails = $this->paymentRepository->getPaymentsByOrderId( $orderId);
+                        $paymentDetails = $this->paymentRepository->getPaymentsByOrderId( $nnTransactionHistory->orderNo);
                         $this->getLogger(__METHOD__)->error('payment call', $paymentDetails);
                         if ($nnTransactionHistory->order_paid_amount < $nnTransactionHistory->order_total_amount || $this->aryCaptureParams['payment_type'] == 'ONLINE_TRANSFER_CREDIT')
                         {
