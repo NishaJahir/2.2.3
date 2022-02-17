@@ -298,7 +298,7 @@ class CallbackController extends Controller
                 if(in_array($this->aryCaptureParams['payment_type'], ['INVOICE_CREDIT', 'CASHPAYMENT_CREDIT', 'ONLINE_TRANSFER_CREDIT']))
                 {
                         $orderDetails = $this->transaction->getTransactionData('tid', $this->aryCaptureParams['shop_tid']);
-                        $this->getLogger(__METHOD__)->error('order call', $orderDetails);
+                        $this->getLogger(__METHOD__)->error('order call SN', $orderDetails);
                         
                         //  Check if the debit happen in previously for online transfer
                         $createPaymentEntry = true;
@@ -311,7 +311,7 @@ class CallbackController extends Controller
                               }
                         }
                     
-                        if ($nnTransactionHistory->order_paid_amount < $nnTransactionHistory->order_total_amount || $this->aryCaptureParams['payment_type'] == 'ONLINE_TRANSFER_CREDIT')
+                        if ($nnTransactionHistory->order_paid_amount < $nnTransactionHistory->order_total_amount || ($this->aryCaptureParams['payment_type'] == 'ONLINE_TRANSFER_CREDIT' && $createPaymentEntry) )
                         {
                         
                             $callbackComments = sprintf($this->paymentHelper->getTranslatedText('callback_initial_execution',$orderLanguage), $this->aryCaptureParams['shop_tid'], sprintf('%0.2f', ($this->aryCaptureParams['amount']/100)), $this->aryCaptureParams['currency'], date('d.m.Y'), date('H:i:s'), $this->aryCaptureParams['tid'] ).'</br>';
