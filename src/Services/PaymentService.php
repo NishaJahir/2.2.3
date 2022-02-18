@@ -748,6 +748,7 @@ class PaymentService
             
             // Check if it is B2B customer from the European country
             $b2bEuropeanCustomer = false;
+            $this->getLogger(__METHOD__)->error('company', $billingAddress->companyName);
             if(!empty($billingAddress->companyName)) {
                 $europeanUnionCountryCodes =  [
                                                 'AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR',
@@ -756,12 +757,14 @@ class PaymentService
                                               ];
                 
                 if(in_array($customerBillingIsoCode, $europeanUnionCountryCodes)) {
+                      
                     $b2bEuropeanCustomer = true;
                 } else {
                     $b2bEuropeanCustomer = false;     
                 }
             }
-
+    $this->getLogger(__METHOD__)->error('b2b condn', $b2bEuropeanCustomer);
+            $this->getLogger(__METHOD__)->error('billing code', $customerBillingIsoCode);
                 
             // Check guarantee payment
             if ((((int) $amount >= (int) $minimumAmount && (in_array(
