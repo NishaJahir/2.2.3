@@ -700,14 +700,16 @@ class PaymentService
     */
     public function getGuaranteeStatus(Basket $basket, $paymentKey, $orderAmount = 0, $billingInvoiceAddrId = 0, $shippingInvoiceAddrId = 0)
     {
-        $this->getLogger(__METHOD__)->error('bas', $basket->customerInvoiceAddressId);
         try {
             if (! is_null($basket) && $basket instanceof Basket) { 
         // Get payment name in lowercase
         $paymentKeyLow = strtolower((string) $paymentKey);
+                $this->getLogger(__METHOD__)->error('guarantee active SS', $paymentKeyLow);
         $guaranteePayment = $this->config->get('Novalnet.'.$paymentKeyLow.'_payment_guarantee_active');
-       
+        $this->getLogger(__METHOD__)->error('guarantee active SS', $guaranteePayment);
         if ($guaranteePayment == 'true') {
+            
+        $this->getLogger(__METHOD__)->error('guarantee active', $guaranteePayment);
             // Get guarantee minimum amount value
             $minimumAmount = $this->paymentHelper->getNovalnetConfig($paymentKeyLow . '_guarantee_min_amount');
             $minimumAmount = ((preg_match('/^[0-9]*$/', $minimumAmount) && $minimumAmount >= '999')  ? $minimumAmount : '999');
