@@ -700,7 +700,7 @@ class PaymentService
     */
     public function getGuaranteeStatus(Basket $basket, $paymentKey, $orderAmount = 0, $billingInvoiceAddrId = 0, $shippingInvoiceAddrId = 0)
     {
-
+        $this->getLogger(__METHOD__)->error('bas', $basket->customerInvoiceAddressId);
         try {
             if (! is_null($basket) && $basket instanceof Basket && !empty($basket->customerInvoiceAddressId)) { 
         // Get payment name in lowercase
@@ -771,8 +771,10 @@ class PaymentService
                 ]
             ) || $b2bEuropeanCustomer) && $basket->currency == 'EUR' && ($addressValidation || ($billingAddress === $shippingAddress)))
             )) {
+                $this->getLogger(__METHOD__)->error('gua', $basket->customerInvoiceAddressId);
                 $processingType = 'guarantee';
             } elseif ($this->config->get('Novalnet.'.$paymentKeyLow.'_payment_guarantee_force_active') == 'true') {   
+                $this->getLogger(__METHOD__)->error('gua SN', $basket->customerInvoiceAddressId);
                 $processingType = 'normal';
             } else {
                 if ( (! in_array( $customerBillingIsoCode, array( 'AT', 'DE', 'CH' ), true ) || $b2bEuropeanCustomer) ) {
@@ -787,6 +789,7 @@ class PaymentService
             }
             return $processingType;
         }//end if
+                $this->getLogger(__METHOD__)->error('bas SN', $basket->customerInvoiceAddressId);
         return 'normal';
             }
         } catch(\Exception $e) {
