@@ -721,7 +721,7 @@ class PaymentService
 
             $shippingAddressId = !empty($basket->customerShippingAddressId) ? $basket->customerShippingAddressId : $shippingInvoiceAddrId;
             
-            $this->getLogger(__METHOD__)->error('billing', $billingAddress);
+            $billingAddressCompany = !empty($billingAddress->companyName) ? $billingAddress->companyName : $billingAddress->name1;
 
             $addressValidation = false;
             if(!empty($shippingAddressId))
@@ -751,7 +751,7 @@ class PaymentService
             // Check if it is B2B customer from the European country
             $b2bEuropeanCustomer = false;
             
-            if(!empty($billingAddress->companyName)) {
+            if(!empty($billingAddressCompany)) {
                 $europeanUnionCountryCodes =  [
                                                 'AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR',
                                                 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PL',
