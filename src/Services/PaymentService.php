@@ -702,7 +702,7 @@ class PaymentService
     {
         $this->getLogger(__METHOD__)->error('bas', $basket->customerInvoiceAddressId);
         try {
-            if (! is_null($basket) && $basket instanceof Basket && !empty($basket->customerInvoiceAddressId)) { 
+            if (! is_null($basket) && $basket instanceof Basket) { 
         // Get payment name in lowercase
         $paymentKeyLow = strtolower((string) $paymentKey);
         $guaranteePayment = $this->config->get('Novalnet.'.$paymentKeyLow.'_payment_guarantee_active');
@@ -793,6 +793,7 @@ class PaymentService
         return 'normal';
             }
         } catch(\Exception $e) {
+             $this->getLogger(__METHOD__)->error('catch', $basket->customerInvoiceAddressId);
             return false;
         }
         
