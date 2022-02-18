@@ -704,12 +704,12 @@ class PaymentService
             if (! is_null($basket) && $basket instanceof Basket) { 
         // Get payment name in lowercase
         $paymentKeyLow = strtolower((string) $paymentKey);
-                $this->getLogger(__METHOD__)->error('guarantee active SS', $paymentKeyLow);
+                
         $guaranteePayment = $this->config->get('Novalnet.'.$paymentKeyLow.'_payment_guarantee_active');
-        $this->getLogger(__METHOD__)->error('guarantee active SS', $guaranteePayment);
+       
         if ($guaranteePayment == 'true') {
             
-        $this->getLogger(__METHOD__)->error('guarantee active', $guaranteePayment);
+        
             // Get guarantee minimum amount value
             $minimumAmount = $this->paymentHelper->getNovalnetConfig($paymentKeyLow . '_guarantee_min_amount');
             $minimumAmount = ((preg_match('/^[0-9]*$/', $minimumAmount) && $minimumAmount >= '999')  ? $minimumAmount : '999');
@@ -720,6 +720,8 @@ class PaymentService
             $customerBillingIsoCode = strtoupper($this->countryRepository->findIsoCode($billingAddress->countryId, 'iso_code_2'));
 
             $shippingAddressId = !empty($basket->customerShippingAddressId) ? $basket->customerShippingAddressId : $shippingInvoiceAddrId;
+            
+            $this->getLogger(__METHOD__)->error('billing', $billingAddress);
 
             $addressValidation = false;
             if(!empty($shippingAddressId))
@@ -748,7 +750,7 @@ class PaymentService
             
             // Check if it is B2B customer from the European country
             $b2bEuropeanCustomer = false;
-            $this->getLogger(__METHOD__)->error('company', $billingAddress->companyName);
+            
             if(!empty($billingAddress->companyName)) {
                 $europeanUnionCountryCodes =  [
                                                 'AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR',
@@ -763,8 +765,8 @@ class PaymentService
                     $b2bEuropeanCustomer = false;     
                 }
             }
-    $this->getLogger(__METHOD__)->error('b2b condn', $b2bEuropeanCustomer);
-            $this->getLogger(__METHOD__)->error('billing code', $customerBillingIsoCode);
+   
+            
                 
             // Check guarantee payment
             if ((((int) $amount >= (int) $minimumAmount && (in_array(
