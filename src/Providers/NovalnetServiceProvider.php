@@ -55,6 +55,7 @@ use Novalnet\Methods\NovalnetGiropayPaymentMethod;
 use Novalnet\Methods\NovalnetPrzelewyPaymentMethod;
 
 use Plenty\Modules\EventProcedures\Services\Entries\ProcedureEntry;
+use Plenty\Modules\EventProcedures\Services\Entries\TriggerEntry;
 use Plenty\Modules\EventProcedures\Services\EventProceduresService;
 use Novalnet\Controllers\PaymentController;
 /**
@@ -217,7 +218,7 @@ class NovalnetServiceProvider extends ServiceProvider
         
         $eventProceduresService->registerTrigger(
             'Novalnet',
-            'order',
+            TriggerEntry::EVENT_TYPE_ORDER,
             'NovalnetMailEventTrigger',
             $mailEventTriggerTitle
         );
