@@ -273,7 +273,7 @@ class PaymentHelper
             $this->getLogger(__METHOD__)->error('order payment', $payment);
             
         /** @var Plenty\Modules\EventProcedures\Services\EventProceduresService $eventProceduresService */
-        $eventProceduresService = pluginApp(Plenty\Modules\EventProcedures\Services\EventProceduresService::class);
+        $eventProceduresService = pluginApp(EventProceduresService::class);
         $eventProceduresService->fireTrigger(
                 $orderId, 
                 'Novalnet', 
