@@ -31,6 +31,7 @@ use Plenty\Modules\Order\Shipping\Countries\Contracts\CountryRepositoryContract;
 use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFactoryContract;
 use Novalnet\Constants\NovalnetConstants;
 use Novalnet\Services\TransactionService;
+use Plenty\Modules\EventProcedures\Services\EventProceduresService;
 
 /**
  * Class PaymentHelper
@@ -269,6 +270,15 @@ class PaymentHelper
     public function assignPlentyPaymentToPlentyOrder(Payment $payment, int $orderId)
     {
         try {
+            
+        /** @var Plenty\Modules\EventProcedures\Services\EventProceduresService $eventProceduresService */
+        $eventProceduresService = pluginApp(Plenty\Modules\EventProcedures\Services\EventProceduresService::class);
+        $eventProceduresService->fireTrigger(
+                $orderId, 
+                'Novalnet', 
+                'NovalnetMailEventTrigger'
+        );
+            
         /** @var \Plenty\Modules\Authorization\Services\AuthHelper $authHelper */
         $authHelper = pluginApp(AuthHelper::class);
         $authHelper->processUnguarded(
