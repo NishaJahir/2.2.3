@@ -208,6 +208,21 @@ class NovalnetServiceProvider extends ServiceProvider
             '\Novalnet\Procedures\RefundEventProcedure@run'
         );
         
+   
+        // Event Trigger for Novalnet Payments if payment created for an order
+         $mailEventTriggerTitle = [
+            'de' =>  'Novalnet | Zahlung erstellt',
+            'en' =>  'Novalnet | Payment Created',
+        ];
+        
+        $eventProceduresService->registerTrigger(
+            'Novalnet',
+            ProcedureEntry::EVENT_TYPE_ORDER,
+            $mailEventTriggerTitle,
+            '\Novalnet\Procedures\MailEventTrigger@run'
+        );
+        
+        
         // Listen for the event that gets the payment method content
         $eventDispatcher->listen(GetPaymentMethodContent::class,
                 function(GetPaymentMethodContent $event) use($config, $paymentHelper, $addressRepository, $paymentService, $basketRepository, $paymentMethodService, $sessionStorage, $twig)
