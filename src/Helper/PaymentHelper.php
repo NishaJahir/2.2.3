@@ -270,6 +270,7 @@ class PaymentHelper
     public function assignPlentyPaymentToPlentyOrder(Payment $payment, int $orderId)
     {
         try {
+            $this->getLogger(__METHOD__)->error('order payment', $payment);
             
         /** @var Plenty\Modules\EventProcedures\Services\EventProceduresService $eventProceduresService */
         $eventProceduresService = pluginApp(Plenty\Modules\EventProcedures\Services\EventProceduresService::class);
