@@ -29,8 +29,7 @@ use Novalnet\Services\TransactionService;
 class NovalnetMailEventTrigger
 {
     use Loggable;
-    
- use Loggable;
+
     
     /**
      *
