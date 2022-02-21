@@ -217,7 +217,7 @@ class NovalnetServiceProvider extends ServiceProvider
         
         $eventProceduresService->registerTrigger(
             'Novalnet',
-            ProcedureEntry::EVENT_TYPE_ORDER,
+            'order',
             'NovalnetMailEventTrigger',
             $mailEventTriggerTitle
         );
