@@ -61,7 +61,7 @@ class NovalnetMailEventTrigger
      */
     public function run(
         EventProceduresTriggered $eventTriggered,
-        EventProceduresService $eventService;
+        EventProceduresService $eventService
     ) {
         /* @var $order Order */
      
