@@ -16,6 +16,7 @@
 namespace Novalnet\Procedures;
 
 use Plenty\Modules\EventProcedures\Events\EventProceduresTriggered;
+use Plenty\Modules\EventProcedures\Services\EventProceduresService;
 use Plenty\Modules\Order\Models\Order;
 use Plenty\Plugin\Log\Loggable;
 use Plenty\Modules\Payment\Contracts\PaymentRepositoryContract;
@@ -29,5 +30,51 @@ class NovalnetMailEventTrigger
 {
     use Loggable;
     
-    $this->getLogger(__METHOD__)->error('call', 'NISHU');
+ use Loggable;
+    
+    /**
+     *
+     * @var PaymentService
+     */
+    private $paymentService;
+    
+    /**
+     *
+     * @var Transaction
+     */
+    private $transaction;
+    
+    /**
+     * Constructor.
+     *
+     * @param PaymentService $paymentService
+     * @param TransactionService $tranactionService
+     */
+     
+    public function __construct(PaymentService $paymentService, TransactionService $tranactionService)
+    {
+        $this->paymentService  = $paymentService;
+        $this->transaction     = $tranactionService;
+    }   
+    
+    /**
+     * @param EventProceduresTriggered $eventTriggered
+     */
+    public function run(
+        EventProceduresTriggered $eventTriggered,
+        EventProceduresService $eventService;
+    ) {
+        /* @var $order Order */
+     
+        $order = $eventTriggered->getOrder(); 
+        $payments = pluginApp(\Plenty\Modules\Payment\Contracts\PaymentRepositoryContract::class);  
+        $paymentDetails = $payments->getPaymentsByOrderId($order->id);
+        
+        if(count($paymentDetails) == 1)  {
+           $this->getLogger(__METHOD__)->error('payment created', $paymentDetails);
+           $eventService->fireTrigger($order->id, 'Novalnet', 'NovalnetMailEventTrigger');
+        } else {
+           $this->getLogger(__METHOD__)->error('payment not created', $paymentDetails);
+        }
+    }
 }
