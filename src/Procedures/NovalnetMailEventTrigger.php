@@ -66,9 +66,12 @@ class NovalnetMailEventTrigger
         /* @var $order Order */
      
         $order = $eventTriggered->getOrder(); 
+     $this->getLogger(__METHOD__)->error('payment created 12345', $order);
         $payments = pluginApp(\Plenty\Modules\Payment\Contracts\PaymentRepositoryContract::class);  
         $paymentDetails = $payments->getPaymentsByOrderId($order->id);
-        
+        $this->getLogger(__METHOD__)->error('payment created 123', $paymentDetails);
+     $this->getLogger(__METHOD__)->error('payment created count', count($paymentDetails));
+     
         if(count($paymentDetails) == 1)  {
            $this->getLogger(__METHOD__)->error('payment created', $paymentDetails);
            $eventService->fireTrigger($order->id, 'Novalnet', 'NovalnetMailEventTrigger');
