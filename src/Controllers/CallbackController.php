@@ -332,8 +332,6 @@ class CallbackController extends Controller
                         } 
                         else
                         {
-                            $orderStatus = $this->config->get('Novalnet.novalnet_credit_status');
-                            $this->updateOrderStatus($nnTransactionHistory->orderNo, $orderStatus);
                             return $this->renderTemplate('Novalnet callback received. Callback Script executed already. Refer Order :'.$nnTransactionHistory->orderNo);
                         }
                 }
@@ -341,6 +339,8 @@ class CallbackController extends Controller
                 {
                             $callbackComments = sprintf($this->paymentHelper->getTranslatedText('callback_initial_execution',$orderLanguage), $this->aryCaptureParams['shop_tid'], sprintf('%0.2f', ($this->aryCaptureParams['amount']/100)), $this->aryCaptureParams['currency'], date('d.m.Y'), date('H:i:s'), $this->aryCaptureParams['tid'] ).'</br>';
                             $this->paymentHelper->updatePayments($callbackComments, $this->aryCaptureParams['tid_status'], $nnTransactionHistory->orderNo);
+                            $orderStatus = $this->config->get('Novalnet.novalnet_credit_status');
+                            $this->updateOrderStatus($nnTransactionHistory->orderNo, $orderStatus);
                             $this->sendCallbackMail($callbackComments);
                             return $this->renderTemplate($callbackComments);
                 }
