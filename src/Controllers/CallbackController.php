@@ -332,6 +332,8 @@ class CallbackController extends Controller
                         } 
                         else
                         {
+                            $orderStatus = $this->config->get('Novalnet.novalnet_credit_status');
+                            $this->updateOrderStatus($nnTransactionHistory->orderNo, $orderStatus);
                             return $this->renderTemplate('Novalnet callback received. Callback Script executed already. Refer Order :'.$nnTransactionHistory->orderNo);
                         }
                 }
@@ -350,7 +352,8 @@ class CallbackController extends Controller
                 if ($this->aryCaptureParams['payment_type'] == 'RETURN_DEBIT_SEPA') {
                     $callbackComments = sprintf($this->paymentHelper->getTranslatedText('callback_return_debit_execution',$orderLanguage), $nnTransactionHistory->tid, sprintf('%0.2f', ($this->aryCaptureParams['amount']/100)) , $this->aryCaptureParams['currency'], date('d.m.Y'), date('H:i:s'), $this->aryCaptureParams['tid'] );
         } elseif ($this->aryCaptureParams['payment_type'] == 'REVERSAL') {
-                $this->updateOrderStatus($nnTransactionHistory->orderNo);
+                $orderStatus = $this->config->get('Novalnet.novalnet_refund_status');
+                $this->updateOrderStatus($nnTransactionHistory->orderNo, $orderStatus);
                 $callbackComments = sprintf($this->paymentHelper->getTranslatedText('callback_reversal_execution',$orderLanguage), $nnTransactionHistory->tid, sprintf('%0.2f', ($this->aryCaptureParams['amount']/100)) , $this->aryCaptureParams['currency'], date('d.m.Y'), date('H:i:s'), $this->aryCaptureParams['tid'] );
         } else {
             
@@ -379,7 +382,6 @@ class CallbackController extends Controller
                              if($additionalInfo['type'] == 'debit') {
                                 $totalCallbackDebitAmount += $total_order_detail->callbackAmount;  
                              }
-
                          } else {
                              $totalCallbackDebitAmount += $total_order_detail->callbackAmount;
                          }
@@ -873,22 +875,20 @@ class CallbackController extends Controller
      * Change the order status for the return debit/chaargeback payments
      *
      * @param int $orderId
+     * @param float $statusId
      */
-     public function updateOrderStatus($orderId)
+     public function updateOrderStatus($orderId, $statusId)
     {
         if(!empty($orderId)) {
             try {
                 /** @var \Plenty\Modules\Authorization\Services\AuthHelper $authHelper */
                 $authHelper = pluginApp(AuthHelper::class);
-                $authHelper->processUnguarded(function () use ($orderId) {
+                $authHelper->processUnguarded(function () use ($orderId, $statusId) {
                     $order = $this->orderRepository->findOrderById($orderId);
-                    $this->getLogger(__METHOD__)->error('order eve', $order);
                     if (!is_null($order) && $order instanceof Order) {
-                        $status['statusId'] = (float) 15;
+                        $status['statusId'] = (float) $statusId;
                         $this->orderRepository->updateOrder($status, $orderId);
                     }
-                    $order2 = $this->orderRepository->findOrderById($orderId);
-                    $this->getLogger(__METHOD__)->error('order eve2', $order2);
                  });
             } catch (\Exception $e) {
                 $this->getLogger(__METHOD__)->error('Novalnet::updateOrderStatus', $e);
