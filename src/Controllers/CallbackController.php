@@ -23,6 +23,7 @@ use Plenty\Plugin\Templates\Twig;
 use Novalnet\Services\TransactionService;
 use Plenty\Plugin\Log\Loggable;
 use Plenty\Plugin\Mail\Contracts\MailerContract;
+use Plenty\Modules\Order\Models\Order;
 use Plenty\Modules\Order\Contracts\OrderRepositoryContract;
 use Plenty\Modules\Account\Address\Contracts\AddressRepositoryContract;
 use \Plenty\Modules\Authorization\Services\AuthHelper;
