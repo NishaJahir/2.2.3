@@ -867,5 +867,32 @@ class CallbackController extends Controller
         return $this->renderTemplate('Novalnet_callback script executed.');
     }
     
-    
+    /**
+     * Change the order status for the return debit/chaargeback payments
+     *
+     * @param int $orderId
+     */
+     public function updateOrderStatus($orderId)
+    {
+        if(!empty($orderId)) {
+            try {
+                /** @var \Plenty\Modules\Authorization\Services\AuthHelper $authHelper */
+                $authHelper = pluginApp(AuthHelper::class);
+                $authHelper->processUnguarded(function () use ($orderId) {
+                    $order = $this->orderRepository->findOrderById($orderId);
+                    $this->getLogger(__METHOD__)->error('order eve', $order);
+                    if (!is_null($order) && $order instanceof Order) {
+                        $status['statusId'] = (float) 15;
+                        $this->orderRepository->updateOrder($status, $orderId);
+                    }
+                    $order2 = $this->orderRepository->findOrderById($orderId);
+                    $this->getLogger(__METHOD__)->error('order eve2', $order2);
+                 });
+            } catch (\Exception $e) {
+                $this->getLogger(__METHOD__)->error('Novalnet::updateOrderStatus', $e);
+            }
+        } else {
+            $this->getLogger(__METHOD__)->error('Novalnet::updateOrderStatus', 'Order Number is empty'); 
+        }
+    }
 }
