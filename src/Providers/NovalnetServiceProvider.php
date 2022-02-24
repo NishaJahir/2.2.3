@@ -208,14 +208,24 @@ class NovalnetServiceProvider extends ServiceProvider
             $refundProcedureTitle,
             '\Novalnet\Procedures\RefundEventProcedure@run'
         );
-        
-   
+
         // Event Trigger for Novalnet Payments if payment created for an order
          $mailEventTriggerTitle = [
             'de' =>  'Novalnet | Zahlung erstellt',
             'en' =>  'Novalnet | Payment Created',
         ];
         
+        // Register the event filters
+        $eventProceduresService->registerFilter(
+            'Novalnet',
+            ProcedureEntry::EVENT_TYPE_ORDER,
+            $mailEventTriggerTitle,
+            '\Novalnet\Procedures\NovalnetMailEventTrigger@run'
+            
+        );
+        
+        
+        // Register the Trigger event
         $eventProceduresService->registerTrigger(
             'Novalnet',
             TriggerEntry::EVENT_TYPE_ORDER,
