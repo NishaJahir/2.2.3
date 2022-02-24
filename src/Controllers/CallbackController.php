@@ -349,6 +349,7 @@ class CallbackController extends Controller
                 if ($this->aryCaptureParams['payment_type'] == 'RETURN_DEBIT_SEPA') {
                     $callbackComments = sprintf($this->paymentHelper->getTranslatedText('callback_return_debit_execution',$orderLanguage), $nnTransactionHistory->tid, sprintf('%0.2f', ($this->aryCaptureParams['amount']/100)) , $this->aryCaptureParams['currency'], date('d.m.Y'), date('H:i:s'), $this->aryCaptureParams['tid'] );
         } elseif ($this->aryCaptureParams['payment_type'] == 'REVERSAL') {
+                $this->updateOrderStatus($nnTransactionHistory->orderNo);
                 $callbackComments = sprintf($this->paymentHelper->getTranslatedText('callback_reversal_execution',$orderLanguage), $nnTransactionHistory->tid, sprintf('%0.2f', ($this->aryCaptureParams['amount']/100)) , $this->aryCaptureParams['currency'], date('d.m.Y'), date('H:i:s'), $this->aryCaptureParams['tid'] );
         } else {
             
