@@ -57,6 +57,22 @@
                   "tooltip":"Config.clientKeyTooltip",
                   "defaultValue":""
                }
+            },
+            "novalnet_refund_status":{  
+               "type":"inputText",
+               "required":false,
+               "label":"Config.refundStatusLabel",
+               "options":{  
+                  "defaultValue":"15"
+               }
+            },
+            "novalnet_credit_status":{  
+               "type":"inputText",
+               "required":false,
+               "label":"Config.creditStatusLabel",
+               "options":{  
+                  "defaultValue":"5"
+               }
             }
          }
       },
