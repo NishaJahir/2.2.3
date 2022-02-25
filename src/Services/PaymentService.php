@@ -338,6 +338,8 @@ class PaymentService
         }
         
         $url = $this->getPaymentData($paymentKey, $paymentRequestData, $doRedirect);
+        
+        $this->getLogger(__METHOD__)->error('Request', $paymentRequestData);
         return [
             'data' => $paymentRequestData,
             'url'  => $url
