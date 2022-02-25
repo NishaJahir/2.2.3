@@ -211,7 +211,7 @@ class PaymentService
         
             $this->paymentHelper->createPlentyPayment($requestData);
             $orderStatus = $this->paymentHelper->getNovalnetConfig('novalnet_refund_status');
-            $this->updateOrderStatus($requestData['order_no'], $orderStatus);
+            $this->paymentHelper->updateOrderStatus($requestData['order_no'], $orderStatus);
            
             return [
                 'type' => 'success',
