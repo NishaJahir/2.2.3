@@ -740,4 +740,25 @@ class PaymentHelper
     public function logger($k, $v) {
         $this->getLogger(__METHOD__)->error($k, $v);
     }
+    
+    public function updateOrderStatus($orderId, $statusId)
+    {
+        if(!empty($orderId)) {
+            try {
+                /** @var \Plenty\Modules\Authorization\Services\AuthHelper $authHelper */
+                $authHelper = pluginApp(AuthHelper::class);
+                $authHelper->processUnguarded(function () use ($orderId, $statusId) {
+                    $order = $this->orderRepository->findOrderById($orderId);
+                    if (!is_null($order) && $order instanceof Order) {
+                        $status['statusId'] = (float) $statusId;
+                        $this->orderRepository->updateOrder($status, $orderId);
+                    }
+                 });
+            } catch (\Exception $e) {
+                $this->getLogger(__METHOD__)->error('Novalnet::updateOrderStatus', $e);
+            }
+        } else {
+            $this->getLogger(__METHOD__)->error('Novalnet::updateOrderStatus', 'Order Number is empty'); 
+        }
+    }
 }
