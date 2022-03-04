@@ -30,7 +30,9 @@ class NovalnetPaymentMethodReinitializePayment
   public function call(Twig $twig, $arg):string
   {
     $order = $arg[0];
+    
     $paymentHelper = pluginApp(PaymentHelper::class);
+    $paymentHelper->logger('order details previous', $order);
     $paymentService = pluginApp(PaymentService::class);
     $config = pluginApp(ConfigRepository::class);
     $basketRepository = pluginApp(BasketRepositoryContract::class);
